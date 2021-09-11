@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "quiz1")
+@RequestMapping(path = "/binarytree")
 @Validated
 public class BinaryTreeController
 {
@@ -56,9 +56,52 @@ public class BinaryTreeController
         return binaryTreeService.getStudentsGrade();
     }
 
-    @GetMapping("/{level}")
+    @GetMapping("/level/{level}")
     public @ResponseBody
     ResponseEntity<?> getStudentsByLevel(@PathVariable int level) throws DataNotFoundException,BinaryTreeException {
         return binaryTreeService.getStudentsByLevel(level);
+    }
+
+    @GetMapping("listStudentsByGradeLessEqual/{grade}")
+    public @ResponseBody
+    ResponseEntity<?> listStudentsByGradeLessEqual(@PathVariable float grade) throws  BinaryTreeException
+    {
+        return binaryTreeService.listStudentsByGrade(grade, 1);
+    }
+    @GetMapping("listStudentsByGradeLess/{grade}")
+    public @ResponseBody
+    ResponseEntity<?> listStudentsByGradeLess(@PathVariable float grade) throws  BinaryTreeException
+    {
+        return binaryTreeService.listStudentsByGrade(grade, 2);
+    }
+    @GetMapping("listStudentsByGradeGreater/{grade}")
+    public @ResponseBody
+    ResponseEntity<?> listStudentsByGradeGreater(@PathVariable float grade) throws  BinaryTreeException
+    {
+        return binaryTreeService.listStudentsByGrade(grade, 3);
+    }
+    @GetMapping("listStudentsByGradeGreaterEqual/{grade}")
+    public @ResponseBody
+    ResponseEntity<?> listStudentsByGradeGreaterEqual(@PathVariable float grade) throws  BinaryTreeException
+    {
+        return binaryTreeService.listStudentsByGrade(grade, 4);
+    }
+
+    @GetMapping("/listEndEqualNum/{number}")
+    public @ResponseBody
+    ResponseEntity<?> listEndEqualNum(@PathVariable char number) throws DataNotFoundException {
+        return binaryTreeService.listEndEqualNum(number);
+    }
+
+    @GetMapping("/countEndEqualNum/{number}")
+    public @ResponseBody
+    ResponseEntity<?> countEndEqualNum(@PathVariable char number) throws DataNotFoundException {
+        return binaryTreeService.countEndEqualNum(number);
+    }
+
+    @GetMapping("/getLeaves")
+    public @ResponseBody
+    ResponseEntity<?> getLeaves() throws DataNotFoundException {
+        return binaryTreeService.getLeaves();
     }
 }

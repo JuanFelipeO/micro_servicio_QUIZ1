@@ -24,36 +24,26 @@ public class Node {
         this.data = data;
     }
 
-    public boolean isLeaf()
-    {
+    public boolean isLeaf() {
         return left == null && right == null;
     }
 
-    public void addNode(Student data) throws BinaryTreeException
-    {
-        if (data.getCode() < this.getData().getCode())
-        {
+    public void addNode(Student data) throws BinaryTreeException {
+        if (data.getCode() < this.getData().getCode()) {
             if (this.getLeft() == null) {
                 this.setLeft(new Node(data));
             } else {
                 this.left.addNode(data);
             }
             this.calculateGrade();
-        }
-        else if (data.getCode() > this.getData().getCode())
-        {
-            if (this.getRight() == null)
-            {
+        } else if (data.getCode() > this.getData().getCode()) {
+            if (this.getRight() == null) {
                 this.setRight(new Node(data));
-            }
-            else
-            {
+            } else {
                 this.right.addNode(data);
             }
             this.calculateGrade();
-        }
-        else
-        {
+        } else {
             throw new BinaryTreeException("Ya existe un estudiante con esa identificacion");
         }
     }
@@ -82,8 +72,7 @@ public class Node {
         return listStudent;
     }
 
-    public List<Student> postOrden()
-    {
+    public List<Student> postOrden() {
         List<Student> listStudent = new ArrayList<>();
         if (this.getLeft() != null) {
             listStudent.addAll(this.getLeft().postOrden());
@@ -95,37 +84,27 @@ public class Node {
         return listStudent;
     }
 
-    public void prune()
-    {
-        if(this.getRight()!=null)
-        {
-            if(this.getRight().isLeaf())
-            {
+    public void prune() {
+        if (this.getRight() != null) {
+            if (this.getRight().isLeaf()) {
                 this.setRight(null);
-            }
-            else
-            {
+            } else {
                 this.getRight().prune();
             }
         }
-        if(this.getLeft()!=null)
-        {
-            if(this.getLeft().isLeaf())
-            {
+        if (this.getLeft() != null) {
+            if (this.getLeft().isLeaf()) {
                 this.setLeft(null);
-            }
-            else
-            {
+            } else {
                 this.getLeft().prune();
             }
         }
     }
 
-    public int calculateGrade()
-    {
-        int gradeLeft = this.getLeft() != null ? this.getLeft().getGrade():0;
-        int gradeRight = this.getRight() != null ? this.getRight().getGrade():0;
-        this.grade = gradeLeft >= gradeRight ? 1 + gradeLeft: 1 + gradeRight;
+    public int calculateGrade() {
+        int gradeLeft = this.getLeft() != null ? this.getLeft().getGrade() : 0;
+        int gradeRight = this.getRight() != null ? this.getRight().getGrade() : 0;
+        this.grade = gradeLeft >= gradeRight ? 1 + gradeLeft : 1 + gradeRight;
         return this.grade;
     }
 
@@ -141,36 +120,126 @@ public class Node {
         return listStudents;
     }
 
-    public List<Student> getStudentsByLevel (int searchLevel, int yourLevel)
-    {
+    public List<Student> getStudentsByLevel(int searchLevel, int yourLevel) {
         List<Student> listStudentsLevel = new ArrayList<>();
-        if (this.isLeaf())
-        {
+        if (this.isLeaf()) {
             return listStudentsLevel;
         }
 
-        if (searchLevel == yourLevel+1)
-        {
-            if (this.getLeft() != null)
-            {
+        if (searchLevel == yourLevel + 1) {
+            if (this.getLeft() != null) {
                 listStudentsLevel.add(this.getLeft().getData());
             }
-            if (this.getRight() != null)
-            {
+            if (this.getRight() != null) {
                 listStudentsLevel.add(this.getRight().getData());
             }
+        } else {
+            if (this.getLeft() != null) {
+                listStudentsLevel.addAll(this.getLeft().getStudentsByLevel(searchLevel, yourLevel + 1));
+            }
+            if (this.getRight() != null) {
+                listStudentsLevel.addAll(this.getRight().getStudentsByLevel(searchLevel, yourLevel + 1));
+            }
+        }
+        return listStudentsLevel;
+    }
+
+    public List<Student> listStudentsByGrade(float grade, int condition) {
+
+        List<Student> listStudentsByGrade = new ArrayList<>();
+
+        if (condition == 1) {
+            if (this.getData().getNote() <= grade) {
+                listStudentsByGrade.add(this.getData());
+            }
+            if (this.getLeft() != null) {
+                listStudentsByGrade.addAll(this.getLeft().listStudentsByGrade(grade, condition));
+            }
+            if (this.getRight() != null) {
+                listStudentsByGrade.addAll(this.getRight().listStudentsByGrade(grade, condition));
+            }
+        } else if (condition == 2) {
+            if (this.getData().getNote() < grade) {
+                listStudentsByGrade.add(this.getData());
+            }
+            if (this.getLeft() != null) {
+                listStudentsByGrade.addAll(this.getLeft().listStudentsByGrade(grade, condition));
+            }
+            if (this.getRight() != null) {
+                listStudentsByGrade.addAll(this.getRight().listStudentsByGrade(grade, condition));
+            }
+        } else if (condition == 3) {
+            if (this.getData().getNote() > grade) {
+                listStudentsByGrade.add(this.getData());
+            }
+            if (this.getLeft() != null) {
+                listStudentsByGrade.addAll(this.getLeft().listStudentsByGrade(grade, condition));
+            }
+            if (this.getRight() != null) {
+                listStudentsByGrade.addAll(this.getRight().listStudentsByGrade(grade, condition));
+            }
+        } else if (condition == 4) {
+            if (this.getData().getNote() >= grade) {
+                listStudentsByGrade.add(this.getData());
+            }
+            if (this.getLeft() != null) {
+                listStudentsByGrade.addAll(this.getLeft().listStudentsByGrade(grade, condition));
+            }
+            if (this.getRight() != null) {
+                listStudentsByGrade.addAll(this.getRight().listStudentsByGrade(grade, condition));
+            }
+        }
+
+        return listStudentsByGrade;
+    }
+
+    public List<Student> listEndEqualNum(char number)
+    {
+        List<Student> listEndEqualNum = new ArrayList<>();
+        if(this.getData().getCode() %10 == number)
+        {
+            listEndEqualNum.add(this.getData());
+        }
+        if (this.getLeft() != null)
+        {
+            if (this.getData().getCode() % 10 == number)
+            {
+                listEndEqualNum.addAll(this.getLeft().listEndEqualNum(number));
+            }
+        }
+        if (this.getRight() != null)
+        {
+            if (this.getData().getCode() % 10 == number)
+            {
+                listEndEqualNum.addAll(this.getRight().listEndEqualNum(number));
+            }
+        }
+        return listEndEqualNum;
+    }
+
+    public int countEndEqualNum(char number)
+    {
+        List<Student> listStudentsEndEqualNum = listEndEqualNum(number);
+        return listStudentsEndEqualNum.size();
+    }
+
+    public List<Student> getLeaves()
+    {
+        List<Student> getLeaves = new ArrayList<>();
+        if (this.isLeaf()) {
+            getLeaves.add(this.getData());
         }
         else
         {
             if (this.getLeft() != null)
             {
-                listStudentsLevel.addAll(this.getLeft().getStudentsByLevel(searchLevel, yourLevel+1));
+                getLeaves.addAll(this.getLeft().getLeaves());
             }
             if (this.getRight() != null)
             {
-                listStudentsLevel.addAll(this.getRight().getStudentsByLevel(searchLevel, yourLevel+1));
+                getLeaves.addAll(this.getRight().getLeaves());
             }
         }
-        return listStudentsLevel;
+        return getLeaves;
     }
 }

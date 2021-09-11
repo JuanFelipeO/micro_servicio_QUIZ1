@@ -95,4 +95,55 @@ public class BinaryTree
         }
         throw new DataNotFoundException("No hay datos que mostrar");
     }
+
+    public List<Student> listStudentsByGrade (float grade, int condition) throws BinaryTreeException
+    {
+        List<Student> listStudentsByGrade = new ArrayList<>();
+
+        if (root != null)
+        {
+            return root.listStudentsByGrade(grade, condition);
+        }
+
+        throw new BinaryTreeException("No hay estudiantes para mostrar");
+    }
+
+    public List<Student> listEndEqualNum(char number) throws DataNotFoundException
+    {
+        // if root has something...
+        if (root!=null)
+        {
+            // call the method in Node
+            return root.listEndEqualNum(number);
+        }
+        throw new DataNotFoundException("Aún no se cuenta con estudiantes");
+    }
+
+    public int countEndEqualNum(char number) throws DataNotFoundException
+    {
+        if(root != null)
+        {
+            if(root.countEndEqualNum(number) != 0)
+            {
+                return root.countEndEqualNum(number);
+            }
+            else
+            {
+                throw new DataNotFoundException("No hay estudiantes terminados en ese número");
+            }
+        }
+        throw new DataNotFoundException("Aún no hay estudiantes");
+    }
+
+    public List<Student> getLeaves() throws DataNotFoundException
+    {
+        if(root!=null)
+        {
+            return root.getLeaves();
+        }
+        else
+        {
+            throw new DataNotFoundException("El árbol esta vacio");
+        }
+    }
 }

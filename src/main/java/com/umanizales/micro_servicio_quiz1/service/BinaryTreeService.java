@@ -54,4 +54,37 @@ public class BinaryTreeService
                 ,HttpStatus.OK
         );
     }
+
+    public ResponseEntity<ResponseBinaryTreeDto> listStudentsByGrade(float grade, int condition) throws BinaryTreeException
+    {
+        if (binaryTree.listStudentsByGrade(grade, condition).isEmpty())
+        {
+            return new ResponseEntity<>(new ResponseBinaryTreeDto(binaryTree.listStudentsByGrade(grade, condition),
+                    "Esta vacia", null), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(new ResponseBinaryTreeDto(binaryTree.listStudentsByGrade(grade, condition),
+                "Success!", null), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ResponseBinaryTreeDto> listEndEqualNum(char number) throws DataNotFoundException
+    {
+        return new ResponseEntity<>(
+                new ResponseBinaryTreeDto(binaryTree.listEndEqualNum(number),"Successful List",
+                        null),HttpStatus.OK);}
+
+    public ResponseEntity<ResponseBinaryTreeDto> countEndEqualNum(char number) throws DataNotFoundException
+    {
+        return new ResponseEntity<>(
+                new ResponseBinaryTreeDto(binaryTree.countEndEqualNum(number),"Successful Counter",
+                        null),HttpStatus.OK);
+
+    }
+
+    public ResponseEntity<ResponseBinaryTreeDto> getLeaves() throws DataNotFoundException
+    {
+        return new ResponseEntity<>(
+                new ResponseBinaryTreeDto(binaryTree.getLeaves(),"List Success",
+                        null),HttpStatus.OK);
+
+    }
 }
